@@ -1,3 +1,3 @@
 # ArthurCampos_VelhaTPA_01092025
 
-Em Dupla com o Felipe Franco
+Admito q usei a internet pq tem muita coisa q a gnt n aprendeu ainda
