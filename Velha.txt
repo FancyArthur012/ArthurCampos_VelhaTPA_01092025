@@ -1,0 +1,266 @@
+using System;
+using Microsoft.VisualBasic;
+
+namespace MyApp
+{
+    internal class Program
+    {
+        static void selectRow(string[] row1, string[] row2, string[] row3)
+        {
+            Console.WriteLine("Selecione a linha desejada(1, 2, 3): ");
+            int selectedRow = int.Parse(Console.ReadLine());
+
+            switch (selectedRow)
+            {
+                case 1:
+                    {
+                        Console.WriteLine("Qual o espaço desejado?(1, 2, 3)");
+                        int selectedSpace = int.Parse(Console.ReadLine());
+
+                        switch (selectedSpace)
+                        {
+                            case 1:
+                                if (row1[0] == "?") row1[0] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            case 2:
+                                if (row1[1] == "?") row1[1] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            case 3:
+                                if (row1[2] == "?") row1[2] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            default:
+                                Console.WriteLine("Escolha um valor aceitável");
+                                break;
+                        }
+                        break;
+                    }
+
+                case 2:
+                    {
+                        Console.WriteLine("Qual o espaço desejado?(1, 2, 3)");
+                        int selectedSpace = int.Parse(Console.ReadLine());
+
+                        switch (selectedSpace)
+                        {
+                            case 1:
+                                if (row2[0] == "?") row2[0] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            case 2:
+                                if (row2[1] == "?") row2[1] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            case 3:
+                                if (row2[2] == "?") row2[2] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            default:
+                                Console.WriteLine("Escolha um valor aceitável");
+                                break;
+                        }
+                        break;
+                    }
+
+                case 3:
+                    {
+                        Console.WriteLine("Qual o espaço desejado?(1, 2, 3)");
+                        int selectedSpace = int.Parse(Console.ReadLine());
+
+                        switch (selectedSpace)
+                        {
+                            case 1:
+                                if (row3[0] == "?") row3[0] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            case 2:
+                                if (row3[1] == "?") row3[1] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            case 3:
+                                if (row3[2] == "?") row3[2] = "X";
+                                else Console.WriteLine("Espaço ocupado, noobou");
+                                break;
+                            default:
+                                Console.WriteLine("Escolha um valor aceitável");
+                                break;
+                        }
+                        break;
+                    }
+
+                default:
+                    {
+                        Console.WriteLine("Escolha um valor aceitável");
+                        break;
+                    }
+            }
+        }
+        
+        static string CheckWinner(string[] row1, string[] row2, string[] row3)
+        {
+            string[,] board =
+            {
+                { row1[0], row1[1], row1[2] },
+                { row2[0], row2[1], row2[2] },
+                { row3[0], row3[1], row3[2] }
+            };
+
+            for (int r = 0; r < 3; r++)
+            {
+                if (board[r, 0] != "?" && board[r, 0] == board[r, 1] && board[r, 1] == board[r, 2])
+                    return board[r, 0];
+            }
+
+            for (int c = 0; c < 3; c++)
+                if (board[0, c] != "?" && board[0, c] == board[1, c] && board[1,c] == board[2, c])
+                    return board[0, c];
+
+            if (board[0, 0] != "?" && board[0, 0] == board[1, 1] && board[1, 1] == board[2, 2])
+                return board[0, 0];
+            if (board[0, 2] != "?" && board[0, 2] == board[1, 1] && board[1, 1] == board[2, 0])
+                return board[0, 2];
+
+            bool full = true;
+
+            foreach (string cell in row1) if (cell == "?") full = false;
+            foreach (string cell in row2) if (cell == "?") full = false;
+            foreach (string cell in row3) if (cell == "?") full = false;
+
+            if (full) return "draw";
+
+            return null;
+        }
+
+        static void resetBoard(string[] row1, string[] row2, string[] row3)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                row1[i] = "?";
+                row2[i] = "?";
+                row3[i] = "?";
+            }
+
+        }
+
+
+        static void Main(string[] args)
+        {
+            bool game = true;
+            var random = new Random();
+
+            int wins = 0;
+            int draw = 0;
+            int lose = 0;
+
+            string[] row1 = { "?", "?", "?" };
+            string[] row2 = { "?", "?", "?" };
+            string[] row3 = { "?", "?", "?" };
+
+
+            Console.WriteLine("Bem vindo ao jogo da velha!");
+            Console.WriteLine("Qual o seu nome?");
+            string nome = Console.ReadLine();
+
+            while (game)
+            {
+                bool playing = true;
+
+
+                while (playing)
+                {
+                    Console.WriteLine(string.Join(" | ", row1));
+                    Console.WriteLine(string.Join(" | ", row2));
+                    Console.WriteLine(string.Join(" | ", row3));
+
+                    selectRow(row1, row2, row3);
+
+                    bool moved = false;
+                    for (int i = 0; i < row1.Length; i++)
+                    {
+                        int chance = random.Next(0, 100);
+                        if (chance < 11 && row1[i] == "?")
+                        {
+                            row1[i] = "O";
+                            moved = true;
+                        }
+                    }
+
+                    for (int i = 0; i < row2.Length && !moved; i++)
+                    {
+                        int chance = random.Next(0, 100);
+                        if (chance < 11 && row2[i] == "?")
+                        {
+                            row2[i] = "O";
+                            moved = true;
+                        }
+                    }
+
+                    for (int i = 0; i < row3.Length && !moved; i++)
+                    {
+                        int chance = random.Next(0, 100);
+                        if (chance < 11 && row3[i] == "?")
+                        {
+                            row3[i] = "O";
+                            moved = true;
+                        }
+                    }
+
+                    if (!moved)
+                    {
+                        bool placed = false;
+                        while (!placed)
+                        {
+                            int row = random.Next(0, 3);
+                            int col = random.Next(0, 3);
+
+                            if (row == 0 && row1[col] == "?") { row1[col] = "O"; placed = true; }
+                            else if (row == 1 && row2[col] == "?") { row2[col] = "O"; placed = true; }
+                            else if (row == 2 && row3[col] == "?") { row3[col] = "O"; placed = true; }
+                        }
+                    }
+
+                    string result = CheckWinner(row1, row2, row3);
+                    if (result != null)
+                    {
+                        if (result == "X")
+                        {
+                            Console.WriteLine("Vitória do Jogador! L + Ratio para os clankers");
+                            wins++;
+                        }
+
+                        else if (result == "O")
+                        {
+                            Console.WriteLine("It's over pro beta, +1 pros clankas...");
+                            lose++;
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("Foi um empate dessa vez");
+                            draw++;
+                        }
+
+                        Console.WriteLine(string.Join(" | ", row1));
+                        Console.WriteLine(string.Join(" | ", row2));
+                        Console.WriteLine(string.Join(" | ", row3));
+
+                        Console.WriteLine($"Placar de {nome}: Vitórias: {wins}, Derrotas: {lose}, Empates: {draw}");
+                        Console.ReadKey();
+                        Console.WriteLine("Quer continuar jogando? (S/N)");
+                        string keepPlaying = Console.ReadLine();
+                        if (keepPlaying == "N")
+                            game = false;
+
+                        else if (keepPlaying == "S")
+                            Console.WriteLine("Mais uma partida então!");
+
+                            resetBoard(row1, row2, row3);
+                        playing = false;
+                    }
+                }
+            }
+        }
+    }
+}
